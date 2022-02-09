@@ -1,0 +1,55 @@
+.wrap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+}
+.inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.ball1 {
+  width: 250px;
+  height: 250px;
+  background: #E90373;
+  filter: blur(180px);
+  position: absolute;
+  right: 100px;
+  top: 120px;
+}
+.ball2 {
+  width: 120px;
+  height: 120px;
+  background: #E90373;
+  filter: blur(80px);
+  position: absolute;
+  left: 300px;
+  bottom: 100px;
+}
+.ball3 {
+  width: 120px;
+  height: 120px;
+  background: #45E7DE;
+  filter: blur(80px);
+  position: absolute;
+  left: 0px;
+  top: 200px;
+}
+
+@media screen and (max-width: 768px) {
+  .ball1 {
+    right: 0;
+    top: 460px;
+  }
+  .ball2 {
+    left: 150px;
+    bottom: 0;
+  }
+  .ball3 {
+    left: 0;
+    top: 500px;
+  }
+}

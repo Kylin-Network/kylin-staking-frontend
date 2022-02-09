@@ -1,0 +1,62 @@
+.button {
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 12px;
+  line-height: 0;
+  font-family: Avenir-Heavy;
+  border-radius: 22px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  img {
+    margin-right: 8px;
+  }
+}
+.primary {
+  background-color: RGB(233, 3, 115);
+
+  &:hover {
+    background-color: RGB(200, 3, 115);
+  }
+
+  &:disabled {
+    background-color: RGB(233, 3, 115);
+  }
+}
+.secondary {
+  background-color: RGB(245, 76, 158);
+
+  &:hover {
+    background-color: RGB(200, 76, 158);
+  }
+
+  &:disabled {
+    background-color: RGB(245, 76, 158);
+  }
+}
+.normal {
+  height: 36px;
+}
+.large {
+  height: 44px;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.loading {
+  margin-right: 5px;
+}

@@ -1,0 +1,15 @@
+{
+  "short_name": "kylin-staking-frontend",
+  "name": "kylin-staking-frontend",
+  "icons": [
+    {
+      "src": "favicon-64x64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
