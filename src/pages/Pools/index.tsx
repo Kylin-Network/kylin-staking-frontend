@@ -73,7 +73,7 @@ export default function Pools() {
               </KyButton>
             </Link>
             <a
-              href={`https://app.uniswap.org/#/add/v2/ETH/${config.lpToken}?chain=${config.network}`}
+              href={`https://app.uniswap.org/#/add/v2/ETH/${config.kyl}?chain=${config.network}`}
               target="_blank"
               rel="noreferrer"
             >
