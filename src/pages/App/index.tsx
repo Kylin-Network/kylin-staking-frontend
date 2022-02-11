@@ -24,7 +24,7 @@ export default function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Pools />} />
-          <Route path="/stake" element={<Stake />} />
+          <Route path="/stake/:tokenName" element={<Stake />} />
         </Routes>
         <Footer />
       </div>

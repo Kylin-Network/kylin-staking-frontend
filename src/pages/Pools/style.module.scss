@@ -41,10 +41,44 @@
 .pools {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
+  justify-content: center;
   gap: 40px;
   margin-top: 40px;
+}
+.card {
+  padding: 30px 50px;
+  border-radius: 16px;
+  background: #000;
+}
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  img {
+    width: 50px;
+  }
+}
+.rowValue {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: right;
+}
+.btns {
+  display: grid;
+  padding: 0 25px;
+  margin-top: 26px;
+  gap: 10px;
+
+  button {
+    text-transform: uppercase;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -72,5 +106,14 @@
   }
   .pools {
     grid-template-columns: 1fr;
+  }
+  .card {
+    padding: 30px 20px;
+  }
+  .btns {
+    padding: 0 15px;
+  }
+  .rowValue {
+    font-size: 18px;
   }
 }

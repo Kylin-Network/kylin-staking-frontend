@@ -2,12 +2,13 @@ import { useWeb3React } from '@web3-react/core'
 import { Link } from 'react-router-dom'
 
 import styles from './style.module.scss'
-import config from '@/config'
+import useConfig from '@/hooks/useConfig'
 import logoWhite from '@/assets/imgs/logoWhite.svg'
 import KyButton from '@/components/KyButton'
 import { useConnect, useAccount } from '@/libs/wallet/hooks'
 
 export default function Header() {
+  const config = useConfig()
   const { account } = useWeb3React()
   const { connected } = useAccount()
   const { connect, disconnect } = useConnect()

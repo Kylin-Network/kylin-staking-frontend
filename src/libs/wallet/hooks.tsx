@@ -4,7 +4,7 @@ import { Web3Provider } from '@ethersproject/providers'
 import { ethers } from 'ethers'
 import ReactDOM from 'react-dom'
 
-import CONFIG, { URLS } from '@/config'
+import CONFIG, { URLS, CONFIGS } from '@/config'
 import WalletModal from '@/components/WalletModal'
 import { injected, walletconnect } from './connector'
 
@@ -54,6 +54,7 @@ export function useInactiveListener(suppress = false) {
       const handleChainChanged = (chainId: string | number) => {
         console.log("Handling 'chainChanged' event with payload", chainId)
         activate(injected)
+        window.location.reload()
       }
       const handleAccountsChanged = (accounts: string[]) => {
         console.log("Handling 'accountsChanged' event with payload", accounts)
@@ -117,7 +118,7 @@ export function useAccount() {
   const { account, chainId, library } = useWeb3React<Web3Provider>()
 
   const connected = useMemo(() => {
-    return account && chainId === CONFIG.chainId
+    return account && Object.keys(CONFIGS.networks).includes(chainId + '')
   }, [account, chainId])
 
   const getAccount = useCallback(async () => {

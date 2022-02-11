@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useCallback } from 'react'
 import { ethers } from 'ethers'
 
-import CONFIG from '@/config'
+import useConfig from './useConfig'
 import useMemoState from './useMemoState'
 import TOKEN_ABI from '@/libs/abis/erc20.json'
 import POOL_ABI from '@/libs/abis/kylPool.json'
@@ -17,7 +17,6 @@ interface SupplyInfo {
   circulatingRate: number
   stakedRate: number
   lockedRate: number
-  apy: number
 }
 
 const circulatingMap = [
@@ -61,6 +60,7 @@ const circulatingMap = [
 ]
 
 export default function useSupply() {
+  const config = useConfig()
   const [supplyInfo, setSupplyInfo] = useMemoState<SupplyInfo>('supply-info', {
     tokenSupply: 0,
     poolSupply: 0,
@@ -69,16 +69,21 @@ export default function useSupply() {
     circulatingSupply: 0,
     circulatingRate: 0,
     stakedRate: 0,
-    lockedRate: 0,
-    apy: 0
+    lockedRate: 0
   })
   const provider = useProvider()
   const kylContract = useMemo(() => {
-    return new ethers.Contract(CONFIG.kyl, TOKEN_ABI, provider)
-  }, [provider])
+    return new ethers.Contract(config.kyl, TOKEN_ABI, provider)
+  }, [provider, config.kyl])
   const poolContract = useMemo(() => {
-    return new ethers.Contract(CONFIG.pool, POOL_ABI, provider)
-  }, [provider])
+    return new ethers.Contract(config.pool, POOL_ABI, provider)
+  }, [provider, config.pool])
+  const lpTokenContract = useMemo(() => {
+    return new ethers.Contract(config.lpToken, TOKEN_ABI, provider)
+  }, [provider, config.lpToken])
+  const lpPoolContract = useMemo(() => {
+    return new ethers.Contract(config.lpPool, POOL_ABI, provider)
+  }, [provider, config.lpPool])
   const uniContract = useMemo(() => {
     const uniProvider = new ethers.providers.JsonRpcProvider(
       'https://mainnet.infura.io/v3/84842078b09946638c03157f83405213'
@@ -107,19 +112,21 @@ export default function useSupply() {
       kylContract.totalSupply(),
       poolContract.totalSupply(),
       uniContract.getReserves(),
-      poolContract.rewardRate()
+      lpTokenContract.totalSupply(),
+      lpPoolContract.totalSupply()
     ])
     const tokenSupply = Number(ethers.utils.formatUnits(result[0]))
     const poolSupply = Number(ethers.utils.formatUnits(result[1]))
-    const uniStaked = Number(ethers.utils.formatUnits(result[2][0]))
+    const reserve = Number(ethers.utils.formatUnits(result[2][0]))
+    const lpTokenSupply = Number(ethers.utils.formatUnits(result[3]))
+    const lpPoolSupply = Number(ethers.utils.formatUnits(result[4]))
+    const uniStaked = reserve * lpPoolSupply / lpTokenSupply
     const kylStaked = poolSupply + uniStaked
     const circulatingSupply = getCirculatingSupply()
     const kylLocked = kylStaked + (tokenSupply - circulatingSupply)
     const circulatingRate = (circulatingSupply / tokenSupply || 0) * 100
     const stakedRate = (kylStaked / circulatingSupply || 0) * 100
     const lockedRate = (kylLocked / tokenSupply || 0) * 100
-    const rewardRate = Number(ethers.utils.formatUnits(result[3]))
-    const apy = ((rewardRate * 3600 * 24 * 365) / poolSupply || 0) * 100
     setSupplyInfo({
       tokenSupply,
       poolSupply,
@@ -128,15 +135,16 @@ export default function useSupply() {
       circulatingSupply,
       circulatingRate,
       stakedRate,
-      lockedRate,
-      apy
+      lockedRate
     })
   }, [
     kylContract,
     poolContract,
     uniContract,
     setSupplyInfo,
-    getCirculatingSupply
+    getCirculatingSupply,
+    lpPoolContract,
+    lpTokenContract
   ])
 
   useEffect(() => {
